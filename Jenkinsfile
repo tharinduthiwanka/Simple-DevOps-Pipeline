@@ -8,22 +8,22 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                bat "docker build -t %IMAGE_NAME% ."
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'npm test'
+                bat "npm test"
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-pass', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh '''
-                        echo $PASSWORD | docker login -u $USERNAME --password-stdin
-                        docker push $IMAGE_NAME
+                    bat '''
+                        echo %PASSWORD% | docker login -u %USERNAME% --password-stdin
+                        docker push %IMAGE_NAME%
                     '''
                 }
             }
@@ -31,7 +31,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 3000:3000 $IMAGE_NAME'
+                bat "docker run -d -p 3000:3000 %IMAGE_NAME%"
             }
         }
     }
