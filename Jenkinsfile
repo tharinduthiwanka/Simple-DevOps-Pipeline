@@ -2,16 +2,10 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'tmax1998/simple-devops' // your dockerhub repo
+        IMAGE_NAME = 'tmax1998/simple-devops'
     }
 
     stages {
-        stage('Clone') {
-            steps {
-                git 'https://github.com/tharinduthiwanka/Simple-DevOps-Pipeline.git' // replace with your repo
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
